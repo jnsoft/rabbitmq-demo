@@ -17,6 +17,7 @@
         }
     },
     "forwardPorts": [],
-    "postCreateCommand": "go mod tidy",
+    "postCreateCommand": "go mod tidy && podman run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4.0-management",
     "remoteUser": "vscode"
+    
 }
