@@ -26,7 +26,8 @@ RUN useradd -ms /bin/bash vscode
 RUN mkdir -p /go && chown -R vscode:vscode /go
 
 # Set the user to vscode
-USER vscode
+#USER vscode
+USER root
 
 # Set the working directory
 WORKDIR /workspace
