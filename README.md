@@ -40,14 +40,17 @@ go run src/task_queue/task/task.go Fifth message.....
 Demo3 (publish / subscribe, deliver a message to multiple consumers)
 ```
 mkdir .tmp
-# output messages (warning and error) to file:
-go run src/pubsub/receiver/receiver.go warning error &> .tmp/logs.log
-# terminal 2 - output to screen (all messages, info warning error):
-go run src/pubsub/receiver/receiver.go info warning error
+
+# output messages to file, only error and critical:
+go run src/pubsub/receiver/receiver.go "*.error" "*.critical" &> .tmp/logs.log
+
+# terminal 2 - output to screen, all messages:
+go run src/pubsub/receiver/receiver.go "#"
+
 # terminal 3 - send logs:
-go run src/pubsub/logger/logger.go error "This is an error!"
-go run src/pubsub/logger/logger.go warning "This is a warning!"
-go run src/pubsub/logger/logger.go info "This is info!"
+go run src/pubsub/logger/logger.go "kern.critical" "A critical kernel error"
+go run src/pubsub/logger/logger.go "cron.error" "An error from cron"
+go run src/pubsub/logger/logger.go "kern.info" "This is info from kernel"
 
 ```
 
@@ -65,3 +68,10 @@ Exchange type:
 * direct: one-to-one or one-to-many, routed to queues based on an exact match between the message's routing key and the queue's binding key.
 * topic: one-to-one or one-to-many, routed to queues based on based on pattern matching between the message's routing key and the queue's binding key.
 * headers: Messages are routed based on the headers and their values. If you have a headers exchange with a binding rule that requires the headers {"type": "order", "format": "json"}, then only messages with headers that match both criteria will be routed to the corresponding queue.
+
+Topic routing:  
+* `*` can substitute for exactly one word
+* `#` can substitute for zero or more words
+If a routing key is <severity>.<system>.<environment>, then `*.ada.*` will catch all messages from the system ada. `*.*.prod` will catch all messages from environment prod. `error.#` will catch all errors from any system in any environment. A queue bound with `#` will catch all messages. A binding like `info.ada.prod` will behave like a binding to a direct exchange.
+
+

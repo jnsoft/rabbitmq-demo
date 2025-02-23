@@ -18,13 +18,13 @@ func main() {
 	defer ch.Close()
 
 	err = ch.ExchangeDeclare(
-		"logs_direct", // name: "" is the default exchange
-		"direct",      // type: direct, topic, headers and fanout
-		true,          // durable
-		false,         // auto-deleted
-		false,         // internal
-		false,         // no-wait
-		nil,           // arguments
+		"logs_topic", // name: "" is the default exchange
+		"topic",      // type: direct, topic, headers and fanout
+		true,         // durable
+		false,        // auto-deleted
+		false,        // internal
+		false,        // no-wait
+		nil,          // arguments
 	)
 	FailOnError(err, "Failed to declare an exchange")
 
@@ -45,12 +45,12 @@ func main() {
 
 	for _, s := range os.Args[1:] {
 		log.Printf("Binding queue %s to exchange %s with routing key %s",
-			q.Name, "logs_direct", s)
+			q.Name, "logs_topic", s)
 		err = ch.QueueBind(
-			q.Name,        // queue name
-			s,             // routing key
-			"logs_direct", // exchange
-			false,
+			q.Name,       // queue name
+			s,            // routing key
+			"logs_topic", // exchange
+			false,        // mandatory
 			nil)
 		FailOnError(err, "Failed to bind a queue")
 	}
