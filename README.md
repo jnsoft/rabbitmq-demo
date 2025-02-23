@@ -39,5 +39,26 @@ go run src/task_queue/task/task.go Fifth message.....
 
 Demo3 (publish / subscribe, deliver a message to multiple consumers)
 ```
-
+mkdir .tmp
+# output messages to file:
+go run src/pubsub/receiver/receiver.go &> .tmp/logs.log
+# output to screen (terminal 2):
+go run src/pubsub/receiver/receiver.go
+# in terminal 3, send logs:
+go run src/pubsub/logger/logger.go
 ```
+
+# RabbitMQ
+
+A sender sends messages to an exchange (or in very simple cases, directly to a queue)
+A receiver reads messages from a queue  
+That relationship between exchange and a queue is called a binding  
+
+
+
+### Exchange
+Exchange type:  
+* fanout: broadcast to every attached queue
+* direct: one-to-one or one-to-many, routed to queues based on an exact match between the message's routing key and the queue's binding key.
+* topic: one-to-one or one-to-many, routed to queues based on based on pattern matching between the message's routing key and the queue's binding key.
+* headers: Messages are routed based on the headers and their values. If you have a headers exchange with a binding rule that requires the headers {"type": "order", "format": "json"}, then only messages with headers that match both criteria will be routed to the corresponding queue.

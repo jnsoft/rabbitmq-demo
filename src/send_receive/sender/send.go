@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	conn, err := amqp.Dial("amqp://guest:guest@rabbitmq:5672/")
+	conn, err := amqp.Dial(RABBITMQ_CON_STRING)
 	FailOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
