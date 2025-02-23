@@ -51,15 +51,42 @@ go run src/pubsub/receiver/receiver.go "#"
 go run src/pubsub/logger/logger.go "kern.critical" "A critical kernel error"
 go run src/pubsub/logger/logger.go "cron.error" "An error from cron"
 go run src/pubsub/logger/logger.go "kern.info" "This is info from kernel"
+```
 
+Demo4 (RPC request reply)  
+* The client creates an exclusive callback queue
+* For an RPC request, the client sends a message with two properties: reply_to, which is set to the callback queue and correlation_id, which is set to a unique value for every request
+* The request is sent to an rpc_queue queue
+* The RPC worker (aka: server) is waiting for requests on that queue. When a request appears, it does the job and sends a message with the result back to the Client, using the queue from the reply_to field.
+* he client waits for data on the callback queue. When a message appears, it checks the correlation_id property. If it matches the value from the request it returns the response to the application.
+
+You can try running more servers (process more requests) and more clients (produce more requests)  
+
+```
+# terminal 1 (server)
+go run src/rpc/server/server.go
+
+# terminal 2 (client)
+go run src/rpc/client/client.go 30
 ```
 
 # RabbitMQ
 
 A sender sends messages to an exchange (or in very simple cases, directly to a queue)
 A receiver reads messages from a queue  
-That relationship between exchange and a queue is called a binding  
 
+The relationship between exchange and a queue is called a binding  
+
+Consumer acknowledgements, cover RabbitMQ communication with consumers.  
+Publisher confirms cover publisher communication with RabbitMQ.  
+
+### AMQP 0-9-1 protocol 
+
+Has 14 properties predefined that go with a message
+* persistent: Marks a message as persistent (wtrue) or transient (false)
+* content_type: Used to describe the mime-type of the encoding. For example for the often used JSON encoding it is a good practice to set this property to: application/json.
+* reply_to: Commonly used to name a callback queue.
+* correlation_id: Useful to correlate RPC responses with requests
 
 
 ### Exchange
