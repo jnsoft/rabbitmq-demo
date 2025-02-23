@@ -1,9 +1,12 @@
 {
     "name": "Go Dev Container",
-    "build": {
-        "dockerfile": "Dockerfile",
-        "context": ".."
-    },
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/workspace",
+    //"build": {
+    //    "dockerfile": "Dockerfile",
+    //    "context": ".."
+    //},
     "customizations": {
         "vscode": {
             "settings": {

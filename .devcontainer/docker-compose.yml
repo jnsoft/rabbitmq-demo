@@ -1,0 +1,21 @@
+version: '3.1'
+
+services:
+  app:
+    image: mcr.microsoft.com/vscode/devcontainers/go:0-1
+    volumes:
+      - .:/workspace
+    command: sleep infinity
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: docker.io/rabbitmq:4.0-management
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5672:5672"
+      - "15672:15672"
