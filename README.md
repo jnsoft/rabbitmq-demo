@@ -4,6 +4,7 @@ Test and demo of RabbitMQ
 
 ```
 go mod init github.com/jnsoft/rabbitmqdemo 
+go get github.com/rabbitmq/amqp091-go
 ```
 
 # Init
