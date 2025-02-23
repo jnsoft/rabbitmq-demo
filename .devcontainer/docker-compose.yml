@@ -1,11 +1,13 @@
 version: '3.1'
-
 services:
-  app:
-    image: mcr.microsoft.com/vscode/devcontainers/go:0-1
+  devc:
+    build:
+      context: "."
+      dockerfile: Dockerfile
     volumes:
-      - .:/workspace
-    command: sleep infinity
+      - .:/workspace:z
+    command: sleep infinity 
+    # command: tail -f /dev/null
     depends_on:
       - rabbitmq
 
@@ -13,9 +15,8 @@ services:
     image: docker.io/rabbitmq:4.0-management
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: mydatabase
+      RABBITMQ_DEFAULT_USER: postgres
+      RABBITMQ_DEFAULT_PASS: postgres
     ports:
       - "5672:5672"
       - "15672:15672"

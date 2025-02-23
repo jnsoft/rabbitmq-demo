@@ -1,8 +1,13 @@
 {
     "name": "Go Dev Container",
-    "dockerComposeFile": "docker-compose.yml",
-    "service": "devc",
-    "workspaceFolder": "/workspace",
+    //"dockerComposeFile": "docker-compose.yml",
+    //"service": "devc",
+    //"workspaceFolder": "/workspace",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "runArgs": ["--network", "host"],
     "customizations": {
         "vscode": {
             "settings": {
@@ -17,5 +22,6 @@
     },
     "forwardPorts": [],
     "postCreateCommand": "go mod tidy",
+    //"remoteUser": "vscode"
     "remoteUser": "root"
 }
