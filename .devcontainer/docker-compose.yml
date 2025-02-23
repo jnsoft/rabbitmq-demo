@@ -1,0 +1,20 @@
+version: '3.1'
+services:
+  devc:
+    image: go-devc
+    volumes:
+      - ..:/workspace:z
+    command: sleep infinity 
+    # command: tail -f /dev/null
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: docker.io/rabbitmq:4.0-management
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
