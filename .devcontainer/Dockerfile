@@ -1,36 +1,6 @@
 
 # Use the official Go image as a parent image
-FROM golang:latest
+FROM docker.io/golang:1.24-alpine
 
-# Install necessary tools
-RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    wget \
-    unzip \
-    podman \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install Delve for debugging
-RUN go install github.com/go-delve/delve/cmd/dlv@latest
-
-# Install Go tools
-RUN go install -v golang.org/x/tools/cmd/goimports@latest
-
-# Install gopls
-RUN go install -v golang.org/x/tools/gopls@latest
-
-# Create a non-root user to use the container
-RUN useradd -ms /bin/bash vscode
-
-RUN mkdir -p /go && chown -R vscode:vscode /go
-
-# Set the user to vscode
-#USER vscode
-USER root
-
-# Set the working directory
-WORKDIR /workspace
-
-# Expose the port for Delve debugger
-EXPOSE 2345
+RUN apk update && apk upgrade
+RUN apk --no-cache add curl git
