@@ -40,12 +40,15 @@ go run src/task_queue/task/task.go Fifth message.....
 Demo3 (publish / subscribe, deliver a message to multiple consumers)
 ```
 mkdir .tmp
-# output messages to file:
-go run src/pubsub/receiver/receiver.go &> .tmp/logs.log
-# output to screen (terminal 2):
-go run src/pubsub/receiver/receiver.go
-# in terminal 3, send logs:
-go run src/pubsub/logger/logger.go
+# output messages (warning and error) to file:
+go run src/pubsub/receiver/receiver.go warning error &> .tmp/logs.log
+# terminal 2 - output to screen (all messages, info warning error):
+go run src/pubsub/receiver/receiver.go info warning error
+# terminal 3 - send logs:
+go run src/pubsub/logger/logger.go error "This is an error!"
+go run src/pubsub/logger/logger.go warning "This is a warning!"
+go run src/pubsub/logger/logger.go info "This is info!"
+
 ```
 
 # RabbitMQ
